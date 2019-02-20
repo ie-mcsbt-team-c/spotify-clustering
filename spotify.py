@@ -1,5 +1,42 @@
 #LIBRARIES
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+import matplotlib.cm as cm
+
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_samples, silhouette_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.base import BaseEstimator
+from sklearn.neighbors import LocalOutlierFactor
+from sklearn.feature_selection import VarianceThreshold
+
+from sklearn.compose import ColumnTransformer
+
+from sklearn.pipeline import Pipeline
+
+from sklearn import linear_model
+from sklearn import svm
+from sklearn.ensemble import RandomForestRegressor
+
+from sklearn.linear_model import LinearRegression
+
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import KFold
+
+from sklearn.metrics import mean_squared_error
+
+from sklearn.pipeline import make_pipeline
+
+from datetime import datetime
+from astral import Astral
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
