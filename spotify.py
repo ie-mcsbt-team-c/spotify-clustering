@@ -8,13 +8,25 @@ import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
+#DATASET 
+#insert path below
+audiofeats = pd.read_csv(r'C:\Users\Leila\Desktop\AI & ML\audio-features-unsupervised-learning\audiofeatures.csv')
+
+
+
 #DECISION
 
 
 #EXPLORATION
 
-#insert path below
-audiofeats = pd.read_csv(r'C:\Users\Leila\Desktop\AI & ML\audio-features-unsupervised-learning\audiofeatures.csv')
+# Correlation Matrix Heatmap
+
+f, ax = plt.subplots(figsize=(10, 6))
+corr = music.corr()
+hm = sns.heatmap(round(corr,2), annot=True, ax=ax, cmap="BuGn_r",fmt='.2f',
+                 linewidths=.05)
+f.subplots_adjust(top=0.93)
+t= f.suptitle('Music Attributes Correlation Heatmap', fontsize=14)
 
 #CLEANING
 
