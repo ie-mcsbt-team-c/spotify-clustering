@@ -50,7 +50,6 @@ x = np.array(audiofeats.drop(['uri'], 1).astype(float))
 
 
 #%%
-
 ############
 #CLUSTERING
 ############
@@ -67,7 +66,9 @@ kmeans.fit(x)
 
 plt.scatter(x["energy"],x["danceability"], c=kmeans.labels_, cmap='rainbow')
 
+#%%
+###################################
 #LABELLING CLUSTERS/INTERPRETATION
-
+###################################
 audiofeats['cluster'] = kmeans.labels_
 audiofeats.head(10)
