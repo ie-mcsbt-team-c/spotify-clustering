@@ -47,8 +47,7 @@ import matplotlib.pyplot as plt
 
 #DATASET 
 #insert path below
-audiofeats = pd.read_csv(r'C:\Users\Leila\Desktop\AI & ML\audio-features-unsupervised-learning\audiofeatures.csv')
-
+audiofeats = pd.read_csv(r'C:\Users\Leila\Desktop\spotify-clustering\TEAM_C_SPOTIFY.csv', sep=';')
 
 #%%
 ##########
@@ -80,11 +79,13 @@ t= f.suptitle('Music Attributes Correlation Heatmap', fontsize=14)
 #CLEANING
 #############
 
+audiofeats = audiofeats.drop(['uri','artist','song_names','Unnamed: 0'], axis=1)
+x = np.array(audiofeats)
 
-
-#dropping 'uri' because float datatype
-x = np.array(audiofeats.drop(['uri'], 1).astype(float))
-
+plt.show()
+mms = MinMaxScaler()
+mms.fit(x)
+data_transformed = mms.transform(x)
 
 #%%
 ############
@@ -92,10 +93,6 @@ x = np.array(audiofeats.drop(['uri'], 1).astype(float))
 ############
 
 
-plt.show()
-mms = MinMaxScaler()
-mms.fit(x)
-data_transformed = mms.transform(x)
 
 model = KMeans(n_clusters=4).fit(X)
 labels = model.fit_predict(X)
@@ -119,7 +116,7 @@ filter_0.describe()
 #VIZUALIZATION
 ###################
 
-plt.scatter(x["energy"],x["danceability"], c=kmeans.labels_, cmap='rainbow')
+plt.scatter(x=audiofeats.energy, y= audiofeats.danceability, c=kmeans.labels_, cmap='rainbow')
 
 
 #%%
