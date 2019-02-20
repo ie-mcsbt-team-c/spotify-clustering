@@ -119,6 +119,44 @@ filter_0.describe()
 plt.scatter(x=audiofeats.energy, y= audiofeats.danceability, c=kmeans.labels_, cmap='rainbow')
 
 
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Prep Dataframe - Leila you probably have this already but I used it for my code to work
+spot = pd.read_csv('/Users/hannaholdorf/Documents/Documents/CSBT/2nd Term/AI & ML/Statistical Learning & Predictions/Clustering/FINAL_TEAM_C.csv', sep=',')
+spot1 =  spot.drop(['tempo', 
+                    'time_signature',
+                    'key',
+                    'duration_ms',
+                    'loudness',
+                    'mode', 
+                    'type', 
+                    'uri',
+                    'acousticness',
+                    'song_names',
+                    'artist'], axis=1)
+
+
+spot1 = spot1.dropna(axis=0)
+spot1 = np.array((spot1).astype(float))
+
+
+kmeans = KMeans(n_clusters=4)  
+kmeans.fit(spot1)
+
+X = spot1[:,0]       #energy
+Y = spot1[:,3]       #instrumentalness
+Z = spot1[:,4]       #danceability
+
+#ax.scatter(X, Y, Z, c='r', marker='o')
+ax.scatter(X, Y, Z, c=kmeans.labels_, cmap='rainbow', marker='o')
+
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
+
+plt.show()
+
 #%%
 ###################################
 #LABELLING CLUSTERS/INTERPRETATION
