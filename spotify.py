@@ -45,6 +45,11 @@ import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+
+
+
 #DATASET 
 #insert path below
 audiofeats = pd.read_csv(r'C:\Users\Leila\Desktop\spotify-clustering\TEAM_C_SPOTIFY.csv', sep=';')
