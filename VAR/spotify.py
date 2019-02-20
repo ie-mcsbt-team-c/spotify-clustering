@@ -13,18 +13,11 @@ import matplotlib.pyplot as plt
 audiofeats = pd.read_csv(r'C:\Users\Leila\Desktop\AI & ML\audio-features-unsupervised-learning\audiofeatures.csv')
 
 
-#%%
-##########
+
 #DECISION
-##########
 
 
-
-
-#%%
-##########
 #EXPLORATION
-###########
 
 # Correlation Matrix Heatmap
 
@@ -35,25 +28,12 @@ hm = sns.heatmap(round(corr,2), annot=True, ax=ax, cmap="BuGn_r",fmt='.2f',
 f.subplots_adjust(top=0.93)
 t= f.suptitle('Music Attributes Correlation Heatmap', fontsize=14)
 
-
-
-
-#%%
-###########
 #CLEANING
-#############
-
-
 
 #dropping 'uri' because float datatype
 x = np.array(audiofeats.drop(['uri'], 1).astype(float))
 
-
-#%%
-
-############
 #CLUSTERING
-############
 
 plt.show()
 mms = MinMaxScaler()
