@@ -91,17 +91,36 @@ x = np.array(audiofeats.drop(['uri'], 1).astype(float))
 #CLUSTERING
 ############
 
+
 plt.show()
 mms = MinMaxScaler()
 mms.fit(x)
 data_transformed = mms.transform(x)
 
-kmeans = KMeans(n_clusters=5)  
-kmeans.fit(x)
+model = KMeans(n_clusters=4).fit(X)
+labels = model.fit_predict(X)
+model.cluster_centers_
+centers = np.array(model.cluster_centers_)
+print(centers)
+df_labels=pd.DataFrame({"labels":labels})
 
+frames=[audiofeats, audiofeats_labels]
+
+result = pd.concat(frames, axis = 1, sort=False)
+result.info()
+filter_0=result.loc[result['labels'] == 0]
+
+filter_0.describe()
+
+
+
+#%%
+#################
 #VIZUALIZATION
+###################
 
 plt.scatter(x["energy"],x["danceability"], c=kmeans.labels_, cmap='rainbow')
+
 
 #%%
 ###################################
