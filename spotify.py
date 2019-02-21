@@ -52,7 +52,7 @@ import matplotlib.pyplot as plt
 
 #DATASET 
 #insert path below
-audiofeats = pd.read_csv(r'C:\Users\Leila\Desktop\spotify-clustering\TEAM_C_SPOTIFY.csv', sep=';')
+audiofeats = pd.read_csv('https://raw.githubusercontent.com/ie-mcsbt-team-c/spotify-clustering/master/TEAM_C_SPOTIFY.csv',';')
 
 #%%
 ##########
