@@ -1,5 +1,5 @@
 #LIBRARIES
-
+#%%
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -14,6 +14,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.base import BaseEstimator
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.feature_selection import VarianceThreshold
+from sklearn.preprocessing import MinMaxScaler
 
 from sklearn.compose import ColumnTransformer
 
@@ -48,7 +49,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
-
+#%%
 
 #DATASET 
 #insert path below
@@ -58,45 +59,78 @@ audiofeats = pd.read_csv('https://raw.githubusercontent.com/ie-mcsbt-team-c/spot
 ##########
 #DECISION
 ##########
+#Spotify Dataset: The Dataset consist of the last 50 songs listened on Spotify extracted thanks to the Spotify API.
+#The Data contains 228 lignes and 7 features to describe the music : Energy, Liveness, Speechiness, 
+#Acousticness, Instrumentalness, Danceability and Valence. 
+#N.B : Each feature used are explained in the PPT document. 
 
+#This data only contains numerical value. 
+audiofeats.select_dtypes(include= 'number')
 
-
-
-#%%
 ##########
-#EXPLORATION
+#%%EXPLORATION
 ###########
 
-# Correlation Matrix Heatmap
+#Caracteristic of the Dataset 
+audiofeats.describe() 
+
+
+#Histogram 
+#Visualizing data in One Dimension (1-D) thanks to histogram. Here, we are 
+# only concerned with analyzing one data attribute or variable and visualizing the same (one dimension)
+
+audiofeats.hist(bins=15, color='green', edgecolor='black', linewidth=1.0,
+           xlabelsize=8, ylabelsize=8, grid=False)    
+plt.tight_layout(rect=(0, 0, 1.2, 1.2))    
+
+#Conclusion: The plot give a good idea of data distribution of each feature. 
+
+
+#Visualizing data in Two Dimensions (2-D):  Let's now check out potential relationships 
+# or correlations amongst the different data attributes
+
+# The pair-wise Correlation Matrix Heatmap
 
 f, ax = plt.subplots(figsize=(10, 6))
-corr = music.corr()
+corr = audiofeats.corr()
 hm = sns.heatmap(round(corr,2), annot=True, ax=ax, cmap="BuGn_r",fmt='.2f',
                  linewidths=.05)
 f.subplots_adjust(top=0.93)
 t= f.suptitle('Music Attributes Correlation Heatmap', fontsize=14)
 
+#Conclusion : Acoustiness and Energy seems to be negatively correlated. 
 
+#%%
 
+# Box Plots
+f, (ax) = plt.subplots(1, 1, figsize=(12, 4))
+f.suptitle('Energy - Acousticness of Music', fontsize=14)
 
+sns.boxplot(x="acousticness", y="energy", data=audiofeats)
+ax.set_xlabel("Energy",size = 20,alpha=0.8)
+ax.set_ylabel("Acousticness",size = 20,alpha=0.8)
+
+#Conclusion : 
 #%%
 ###########
 #CLEANING
 #############
 
 audiofeats = audiofeats.drop(['uri','artist','song_names','Unnamed: 0'], axis=1)
-x = np.array(audiofeats)
-
+X = np.array(audiofeats)
+#%% 
 plt.show()
+
+#Scale : Transforms features by scaling each feature to a given range.
+
 mms = MinMaxScaler()
-mms.fit(x)
+mms.fit(X)
 data_transformed = mms.transform(x)
 
 #%%
 ############
 #CLUSTERING
 ############
-
 
 
 model = KMeans(n_clusters=4).fit(X)
