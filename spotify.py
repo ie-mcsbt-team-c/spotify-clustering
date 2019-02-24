@@ -9,14 +9,11 @@ import matplotlib.cm as cm
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.base import BaseEstimator
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import MinMaxScaler
-
-from sklearn.compose import ColumnTransformer
 
 from sklearn.pipeline import Pipeline
 
@@ -53,6 +50,7 @@ import matplotlib.pyplot as plt
 
 #DATASET 
 #insert path below
+all_feats = pd.read_csv('https://raw.githubusercontent.com/ie-mcsbt-team-c/spotify-clustering/master/TEAM_C_SPOTIFY.csv',';')
 audiofeats = pd.read_csv('https://raw.githubusercontent.com/ie-mcsbt-team-c/spotify-clustering/master/TEAM_C_SPOTIFY.csv',';')
 
 #%%
@@ -73,6 +71,7 @@ audiofeats.select_dtypes(include= 'number')
 
 #Caracteristic of the Dataset 
 audiofeats.describe() 
+audiofeats = audiofeats.drop("Unnamed: 0", axis = 1)
 
 
 #Histogram 
@@ -116,37 +115,43 @@ ax.set_ylabel("Acousticness",size = 20,alpha=0.8)
 #CLEANING
 #############
 
-audiofeats = audiofeats.drop(['uri','artist','song_names','Unnamed: 0'], axis=1)
-X = np.array(audiofeats)
+audiofeats = audiofeats.drop(['uri','artist','song_names'], axis=1)
+audio_array = np.array(audiofeats)
 #%% 
 plt.show()
 
 #Scale : Transforms features by scaling each feature to a given range.
 
 mms = MinMaxScaler()
-mms.fit(X)
-data_transformed = mms.transform(x)
+mms.fit(audio_array)
+audio_array_scaled = mms.transform(audio_array)
 
 #%%
 ############
 #CLUSTERING
 ############
 
+model = KMeans(n_clusters=4).fit(audio_array_scaled)
+labels = model.fit_predict(audio_array_scaled)
 
-model = KMeans(n_clusters=4).fit(X)
-labels = model.fit_predict(X)
-model.cluster_centers_
-centers = np.array(model.cluster_centers_)
-print(centers)
-df_labels=pd.DataFrame({"labels":labels})
+#David, I don´t understand why there is so much stuff in this code ? 
+#I rewrote it in 2 lines for clarity but feel free to add anything 
+# or add why it´s there for in comments pliz
 
-frames=[audiofeats, audiofeats_labels]
-
-result = pd.concat(frames, axis = 1, sort=False)
-result.info()
-filter_0=result.loc[result['labels'] == 0]
-
-filter_0.describe()
+#model = KMeans(n_clusters=4).fit(audio_array)
+#labels = model.fit_predict(X)
+#model.cluster_centers_
+#centers = np.array(model.cluster_centers_)
+#print(centers)
+#audiofeats_labels=pd.DataFrame({"labels":labels})
+#
+#frames=[audiofeats, audiofeats_labels]
+#
+#result = pd.concat(frames, axis = 1, sort=False)
+#result.info()
+#filter_0=result.loc[result['labels'] == 0]
+#
+#filter_0.describe()
 
 
 
@@ -155,40 +160,26 @@ filter_0.describe()
 #VIZUALIZATION
 ###################
 
-plt.scatter(x=audiofeats.energy, y= audiofeats.danceability, c=kmeans.labels_, cmap='rainbow')
 
+
+plt.scatter(x=audiofeats.energy,y=audiofeats.danceability, c=model.labels_, cmap='rainbow')
+
+#%%
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-# Prep Dataframe - Leila you probably have this already but I used it for my code to work
-spot = pd.read_csv('/Users/hannaholdorf/Documents/Documents/CSBT/2nd Term/AI & ML/Statistical Learning & Predictions/Clustering/FINAL_TEAM_C.csv', sep=',')
-spot1 =  spot.drop(['tempo', 
-                    'time_signature',
-                    'key',
-                    'duration_ms',
-                    'loudness',
-                    'mode', 
-                    'type', 
-                    'uri',
-                    'acousticness',
-                    'song_names',
-                    'artist'], axis=1)
+audio_3d = np.array((audiofeats).astype(float))
+#
+#kmeans = KMeans(n_clusters=4)  
+#kmeans.fit(spot1)
 
-
-spot1 = spot1.dropna(axis=0)
-spot1 = np.array((spot1).astype(float))
-
-
-kmeans = KMeans(n_clusters=4)  
-kmeans.fit(spot1)
-
-X = spot1[:,0]       #energy
-Y = spot1[:,3]       #instrumentalness
-Z = spot1[:,4]       #danceability
+X = audio_3d[:,0]       #energy
+Y = audio_3d[:,3]       #instrumentalness
+Z = audio_3d[:,4]       #danceability
 
 #ax.scatter(X, Y, Z, c='r', marker='o')
-ax.scatter(X, Y, Z, c=kmeans.labels_, cmap='rainbow', marker='o')
+ax.scatter(X, Y, Z, c=model.labels_, cmap='rainbow', marker='o')
 
 ax.set_xlabel('X Label')
 ax.set_ylabel('Y Label')
@@ -200,5 +191,14 @@ plt.show()
 ###################################
 #LABELLING CLUSTERS/INTERPRETATION
 ###################################
-audiofeats['cluster'] = kmeans.labels_
-audiofeats.head(10)
+audiofeats['cluster'] = model.labels_
+audio_withinfo = audiofeats.merge(all_feats[['artist','song_names']], left_index=True, right_index=True)
+
+audio_withinfo.head(10)
+c1= audio_withinfo.loc[audiofeats['cluster'] == 0]
+c2= audio_withinfo.loc[audiofeats['cluster'] == 1]
+c3= audio_withinfo.loc[audiofeats['cluster'] == 2]
+c4= audio_withinfo.loc[audiofeats['cluster'] == 3]
+
+
+
