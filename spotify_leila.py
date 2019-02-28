@@ -301,97 +301,46 @@ def number_of_clusters_silhouette():
             plt.suptitle(("Silhouette analysis for KMeans clustering on sample data "
                       "with n_clusters = %d" % n_clusters),
                      fontsize=14, fontweight='bold')
-            
-            
-            
-#    plt.figure()
-    
 
 
-#    plt.show()
+    plt.show()
     
-   
+    plt.figure()
+    plt.bar(range(n_clusters), scores, width=0.6, color="k", align="center")
+    plt.title("Silhouette scores vs number of clusters")
         
-        
+    
 number_of_clusters_silhouette()
 
 #%%
 
-#model. Clustering the dataset with 
 
-model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
+
+#model. Clustering the dataset with 
+model = KMeans(n_clusters=4, init="k-means++", n_init=10, precompute_distances = True).fit(audio_array_scaled)
 labels = model.fit_predict(audio_array_scaled)
 
 
-#%%
-def clustering_centers_A():
-    model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=50, max_iter=300).fit(audio_array_scaled)
-#    labels = model.fit_predict(audio_array_scaled)
+# I LL CLEAR THIS
+#David, I don´t understand why there is so much stuff in this code ? 
+#I rewrote it in 2 lines for clarity but feel free to add anything 
+# or add why it´s there for in comments pliz
 
 
-    model.cluster_centers_
-    centers = np.array(model.cluster_centers_)
-    counter = len(centers)
-    i = 0
-    for r in range(counter):
-        i+=1
-        if i <= counter: 
-            centers_0 = print ({"The center of cluster "+str(r):centers[r]})
-    return centers_0
-            
-clustering_centers_A()
-
-#%%
-
-def clustering_centers_B():
-    model = KMeans(n_clusters=5, init="k-means++", n_init=1000, precompute_distances = True, random_state=20, max_iter=300).fit(audio_array_scaled)
-#    labels = model.fit_predict(audio_array_scaled)
+#model.cluster_centers_
+#centers = np.array(model.cluster_centers_)
+#print(centers)
+#audiofeats_labels=pd.DataFrame({"labels":labels})
+#
+#frames=[audiofeats, audiofeats_labels]
+#
+#result = pd.concat(frames, axis = 1, sort=False)
+#result.info()
+#filter_0=result.loc[result['labels'] == 0]
+#
+#filter_0.describe()
 
 
-    model.cluster_centers_
-    centers = np.array(model.cluster_centers_)
-    counter = len(centers)
-    i = 0
-    for r in range(counter):
-        i+=1
-        if i <= counter: 
-            print ({"The center of cluster "+str(r):centers[r]})
-            
-clustering_centers_B()
-#%%
-
-def clustering_centers_C():
-    model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=100, max_iter=300).fit(audio_array_scaled)
-#    labels = model.fit_predict(audio_array_scaled)
-
-
-    model.cluster_centers_
-    centers = np.array(model.cluster_centers_)
-    counter = len(centers)
-    i = 0
-    for r in range(counter):
-        i+=1
-        if i <= counter: 
-            print ({"The center of cluster "+str(r):centers[r]})
-            
-clustering_centers_C()
-#%%
-
-def clustering_centers_D():
-    model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
-#    labels = model.fit_predict(audio_array_scaled)
-
-
-    model.cluster_centers_
-    centers = np.array(model.cluster_centers_)
-    counter = len(centers)
-    i = 0
-    for r in range(counter):
-        i+=1
-        if i <= counter: 
-            print ({"The center of cluster "+str(r):centers[r]})
-            
-clustering_centers_D()
 
 #%%
 #################
@@ -400,8 +349,9 @@ clustering_centers_D()
 
 
 
+plt.scatter(x=audiofeats.energy,y=audiofeats.danceability, c=model.labels_, cmap='rainbow')
 
-#%% 3D Presentation 
+#%%
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
