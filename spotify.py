@@ -6,6 +6,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.cm as cm
 
+from sklearn import metrics
+from sklearn.metrics import pairwise_distances
+from sklearn import datasets
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
 from sklearn.preprocessing import StandardScaler
