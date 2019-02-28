@@ -6,6 +6,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.cm as cm
 
+from sklearn import metrics
+from sklearn.metrics import pairwise_distances
+from sklearn import datasets
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
 from sklearn.preprocessing import StandardScaler
@@ -315,18 +318,15 @@ def number_of_clusters_silhouette():
         
 number_of_clusters_silhouette()
 
+
+
 #%%
-
-#model. Clustering the dataset with 
-
-model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
-labels = model.fit_predict(audio_array_scaled)
-
+# Avoiding the different seed, local minimum and convergence 
 
 #%%
 def clustering_centers_A():
     model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=50, max_iter=300).fit(audio_array_scaled)
-#    labels = model.fit_predict(audio_array_scaled)
+    labels = model.fit_predict(audio_array_scaled)
 
 
     model.cluster_centers_
@@ -336,16 +336,17 @@ def clustering_centers_A():
     for r in range(counter):
         i+=1
         if i <= counter: 
-            centers_0 = print ({"The center of cluster "+str(r):centers[r]})
-    return centers_0
+            print ({"The center of cluster "+str(r):centers[r]})
+    
+    print ("The value of calinski_harabaz_score is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
             
 clustering_centers_A()
 
 #%%
 
 def clustering_centers_B():
-    model = KMeans(n_clusters=5, init="k-means++", n_init=1000, precompute_distances = True, random_state=20, max_iter=300).fit(audio_array_scaled)
-#    labels = model.fit_predict(audio_array_scaled)
+    model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=20, max_iter=300).fit(audio_array_scaled)
+    labels = model.fit_predict(audio_array_scaled)
 
 
     model.cluster_centers_
@@ -357,12 +358,14 @@ def clustering_centers_B():
         if i <= counter: 
             print ({"The center of cluster "+str(r):centers[r]})
             
+    print ("The value of calinski_harabaz_score is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+
 clustering_centers_B()
 #%%
 
 def clustering_centers_C():
     model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=100, max_iter=300).fit(audio_array_scaled)
-#    labels = model.fit_predict(audio_array_scaled)
+    labels = model.fit_predict(audio_array_scaled)
 
 
     model.cluster_centers_
@@ -373,7 +376,9 @@ def clustering_centers_C():
         i+=1
         if i <= counter: 
             print ({"The center of cluster "+str(r):centers[r]})
-            
+    
+    print ("The value of calinski_harabaz_score is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+       
 clustering_centers_C()
 #%%
 
@@ -390,8 +395,65 @@ def clustering_centers_D():
         i+=1
         if i <= counter: 
             print ({"The center of cluster "+str(r):centers[r]})
-            
+    
+    print ("The value of calinski_harabaz_score is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+ 
 clustering_centers_D()
+
+
+#%%
+
+# Evaluation of clustering
+
+#Calinski-Harabasz Index : The math formula to the measur.
+
+#      (SSB/SSW)×(N−k/k−1)
+
+#Where k is the number of clusters, and N is the total number of observations (data points), 
+#SSW is the overall within-cluster variance (equivalent to the total within sum of squares), 
+#SSB is the overall between-cluster variance.
+
+#You can calculate SSB by using the total sum of squares (tss) minus SSW. For a given dataset, 
+#the total sum of squares (tss) is the squared distance of all the data points from the dataset’s centroid, 
+#this measure is independent with the number of cluster.
+
+#For clarity, SSB measures the variance of all the cluster centroids from the dataset’s grand centroid 
+#(A big SSB value means that the centroid of each cluster will be spread out and they are not too close to each other), 
+#and given that we already know SSW will keep on decreasing as the number of clusters goes up. Therefore, 
+#for the Calinski-Harabasz Index, the ratio of SSBSSW should be the biggest that at the optimal clustering size.
+
+
+#%%
+def calinski_harabaz_score_4():
+    model = KMeans(n_clusters=4, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
+    labels = model.fit_predict(audio_array_scaled)
+    print ("The value of calinski_harabaz_score for 4 clusters is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+    
+calinski_harabaz_score_4()
+#%%
+def calinski_harabaz_score_5():
+    model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
+    labels = model.fit_predict(audio_array_scaled)
+    print ("The value of calinski_harabaz_score for 4 clusters is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+    
+calinski_harabaz_score_5()
+
+#%%
+def calinski_harabaz_score_6():
+    model = KMeans(n_clusters=6, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
+    labels = model.fit_predict(audio_array_scaled)
+    print ("The value of calinski_harabaz_score for 4 clusters is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+
+calinski_harabaz_score_6()
+   
+#%%
+
+model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
+labels = model.fit_predict(audio_array_scaled)
+
+
+
+
 
 #%%
 #################
