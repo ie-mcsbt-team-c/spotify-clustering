@@ -434,7 +434,7 @@ calinski_harabaz_score_4()
 def calinski_harabaz_score_5():
     model = KMeans(n_clusters=5, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
     labels = model.fit_predict(audio_array_scaled)
-    print ("The value of calinski_harabaz_score for 4 clusters is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+    print ("The value of calinski_harabaz_score for 5 clusters is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
     
 calinski_harabaz_score_5()
 
@@ -442,7 +442,7 @@ calinski_harabaz_score_5()
 def calinski_harabaz_score_6():
     model = KMeans(n_clusters=6, init="k-means++", n_init=228, precompute_distances = True, random_state=None, max_iter=300).fit(audio_array_scaled)
     labels = model.fit_predict(audio_array_scaled)
-    print ("The value of calinski_harabaz_score for 4 clusters is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
+    print ("The value of calinski_harabaz_score for 6 clusters is = "+ str(metrics.calinski_harabaz_score(audio_array_scaled, labels))) 
 
 calinski_harabaz_score_6()
    
